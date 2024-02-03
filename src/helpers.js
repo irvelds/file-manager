@@ -1,4 +1,5 @@
 import { homedir } from 'os';
+import { stat } from 'fs/promises';
 
 const USERNAME_KEY = '--username=';
 
@@ -38,3 +39,11 @@ export const exitProgram = (userName) => {
     process.exit();
 }
 
+export const isExistPath = async (path) => {
+    try {
+        await stat(path);
+        return true;
+    } catch {
+        return false;
+    }
+}
