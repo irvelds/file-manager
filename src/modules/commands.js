@@ -8,6 +8,10 @@ import { addFile } from './add.js';
 import { renameFile } from './rn.js';
 import { copyFile } from './cp.js';
 import { removeFile } from './rm.js';
+import { getCPUInfo, getHomeDir, getUserName, getArch, getEOL } from './osFn.js';
+import { getHash } from './hash.js'
+import { createBrotli } from './zlib.js'
+
 export const readCommands = () => {
   const rl = readlinePromises.createInterface({
     input: process.stdin,
@@ -41,6 +45,28 @@ export const readCommands = () => {
           exitCommand();
       }
     }
+    else if (command === 'os') {
+      switch (args) {
+        case '--EOL':
+          getEOL();
+          break;
+        case '--cpus':
+          getCPUInfo();
+          break;
+        case '--homedir':
+          getHomeDir();
+          break;
+        case '--username':
+          getUserName();
+          break;
+        case '--architecture':
+          getArch();
+          break;
+        default:
+          console.log(msg.INVALID_INPUT);
+          exitCommand();
+      }
+    }
     else {
       switch (command) {
         case 'cd':
@@ -64,6 +90,15 @@ export const readCommands = () => {
         case 'rm':
           await removeFile(args);
           break;
+        case 'hash':
+          await getHash(args);
+          break;
+        case 'compress':
+          await createBrotli(args, 'compress');
+          break;
+        case 'decompress':
+          await createBrotli(args, 'decompress');
+          break;
         default:
           console.log(msg.INVALID_INPUT);
           exitCommand();
@@ -72,3 +107,4 @@ export const readCommands = () => {
   });
 
 };
+
