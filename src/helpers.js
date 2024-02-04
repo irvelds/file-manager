@@ -39,6 +39,24 @@ export const exitProgram = (userName) => {
     process.exit();
 }
 
+
+export const getArgs = (args) => {
+    const argsArray = [];
+    let joinPath = '';
+    args.split(' ')
+        .forEach((arg) => {
+            if (!arg) return;
+            return argsArray.push(arg);
+        });
+
+    if (argsArray.length > 2) {
+        joinPath = argsArray.join(' ').slice(argsArray[0].length + 1);
+    }
+    else joinPath = argsArray[1];
+    return { argsArray, joinPath }
+};
+
+
 export const isExistPath = async (path) => {
     try {
         await stat(path);

@@ -1,23 +1,7 @@
 import { resolve, basename } from 'path';
-import { mkdir, unlink } from 'fs/promises';
-import { state, exitCommand, isExistPath, msg } from '../helpers.js';
+import { unlink } from 'fs/promises';
+import { state, exitCommand, isExistPath, msg, getArgs } from '../helpers.js';
 import { createReadStream, createWriteStream } from 'fs';
-
-const getArgs = (args) => {
-    const argsArray = [];
-    let joinPath = '';
-    args.split(' ')
-        .forEach((arg) => {
-            if (!arg) return;
-            return argsArray.push(arg);
-        });
-
-    if (argsArray.length > 2) {
-        joinPath = argsArray.join(' ').slice(argsArray[0].length + 1);
-    }
-    else joinPath = argsArray[1];
-    return { argsArray, joinPath }
-};
 
 
 export const copyFile = async (args, mv = false) => {
@@ -48,7 +32,9 @@ export const copyFile = async (args, mv = false) => {
             return
         }
         if (!(await isExistPath(targetFolderName))) {
-            await mkdir(targetFolderName, { recursive: true })
+            console.log('Target folder does not exist');
+            console.log(msg.OPERATION_FAILED);
+            return
         }
         await new Promise((resolve, reject) => {
             const readStream = createReadStream(currentFilePath);

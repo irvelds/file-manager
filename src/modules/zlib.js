@@ -1,27 +1,8 @@
-import { state, exitCommand, msg } from '../helpers.js';
+import { state, exitCommand, msg, getArgs } from '../helpers.js';
 import { resolve, basename } from 'path';
 import { createBrotliCompress, createBrotliDecompress } from 'zlib';
 import { createReadStream, createWriteStream } from 'fs';
 import { stat } from 'fs/promises';
-
-
-const getArgs = (args) => {
-    const argsArray = [];
-    let joinPath = '';
-
-    args.split(' ')
-        .forEach((arg) => {
-            if (!arg) return;
-            return argsArray.push(arg);
-        });
-
-    if (argsArray.length > 2) {
-        joinPath = argsArray.join(' ').slice(argsArray[0].length + 1);
-    }
-    else joinPath = argsArray[1];
-
-    return { argsArray, joinPath }
-};
 
 export const createBrotli = async (args, action = 'compress') => {
 
